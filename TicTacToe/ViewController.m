@@ -14,22 +14,12 @@ int playerTurn = 1;
 
 @interface ViewController ()
 
-//@property (strong, nonatomic) NSMutableArray *squareArray;
-
 @property (strong, nonatomic) UIAlertView *winnersAlert;
-
 @property (strong, nonatomic) NSMutableArray *winnersArray;
-//@property (strong, nonatomic) NSMutableArray *rowOneWin;
-//@property (strong, nonatomic) NSMutableArray *rowTwoWin;
-//@property (strong, nonatomic) NSMutableArray *rowThreeWin;
-//@property (strong, nonatomic) NSMutableArray *colOneWin;
-//@property (strong, nonatomic) NSMutableArray *colTwoWin;
-//@property (strong, nonatomic) NSMutableArray *colThreeWin;
-//@property (strong, nonatomic) NSMutableArray *diagOneWin;
-//@property (strong, nonatomic) NSMutableArray *diagTwoWin;
-
 @property (weak, nonatomic) IBOutlet UILabel *turnLabel;
+@property (nonatomic) BOOL weHaveWinner;
 
+@property (strong, nonatomic) NSArray *squareArray;
 @property (strong, nonatomic) TttSquare *squareOne;
 @property (strong, nonatomic) TttSquare *squareTwo;
 @property (strong, nonatomic) TttSquare *squareThree;
@@ -40,6 +30,7 @@ int playerTurn = 1;
 @property (strong, nonatomic) TttSquare *squareEight;
 @property (strong, nonatomic) TttSquare *squareNine;
 
+@property (strong, nonatomic) NSMutableArray *boxArray;
 @property (weak, nonatomic) IBOutlet UILabel *boxOne;
 @property (weak, nonatomic) IBOutlet UILabel *boxTwo;
 @property (weak, nonatomic) IBOutlet UILabel *boxThree;
@@ -52,7 +43,7 @@ int playerTurn = 1;
 
 -(NSString*) exoroh:(int) pTurn;
 -(NSString*) turnTextChange:(int) pTurn;
--(void) isWinner;
+-(void) isWinner:(int)pTurn;
 
 @end
 
@@ -67,286 +58,160 @@ int playerTurn = 1;
     }
 }
 
--(NSString*) exoroh:(int) pTurn {
+-(NSString*) exoroh:(int) pTurn{
     if (pTurn == 1) {
-        playerTurn = 2;
-        //NSLog(@"%i", playerTurn);
         return @"X";
     } else {
-        playerTurn = 1;
         return @"O";
     }
 }
 
--(void) isWinner {
-    if (self.winnersArray[0] == self.winnersArray[1] && self.winnersArray[0] == self.winnersArray[2]) {
-        self.winnersAlert = [[UIAlertView alloc] initWithTitle:@"Winner!" message:[NSString stringWithFormat:@"Player %@ Wins!", self.winnersArray[0]] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+-(void) isWinner:(int) pTurn {
+    self.weHaveWinner = NO;
+    if ([self.squareArray[0] squareVal] != 0 && [self.squareArray[0] squareVal] == [self.squareArray[1] squareVal] && [self.squareArray[0] squareVal] == [self.squareArray[2] squareVal]) {
+        self.weHaveWinner = YES;
+    } else if ([self.squareArray[3] squareVal] != 0 && [self.squareArray[3] squareVal] == [self.squareArray[4] squareVal] && [self.squareArray[3] squareVal] == [self.squareArray[5] squareVal]) {
+        self.weHaveWinner = YES;
+    } else if ([self.squareArray[6] squareVal] != 0 && [self.squareArray[6] squareVal] == [self.squareArray[7] squareVal] && [self.squareArray[6] squareVal] == [self.squareArray[8] squareVal]) {
+        self.weHaveWinner = YES;
+    } else if ([self.squareArray[0] squareVal] != 0 && [self.squareArray[0] squareVal] == [self.squareArray[3] squareVal] && [self.squareArray[0] squareVal] == [self.squareArray[6] squareVal]) {
+        self.weHaveWinner = YES;
+    } else if ([self.squareArray[1] squareVal] != 0 && [self.squareArray[1] squareVal] == [self.squareArray[4] squareVal] && [self.squareArray[1] squareVal] == [self.squareArray[7] squareVal]) {
+        self.weHaveWinner = YES;
+    } else if ([self.squareArray[2] squareVal] != 0 && [self.squareArray[2] squareVal] == [self.squareArray[5] squareVal] && [self.squareArray[2] squareVal] == [self.squareArray[8] squareVal]) {
+        self.weHaveWinner = YES;
+    } else if ([self.squareArray[0] squareVal] != 0 && [self.squareArray[0] squareVal] == [self.squareArray[4] squareVal] && [self.squareArray[0] squareVal] == [self.squareArray[8] squareVal]) {
+        self.weHaveWinner = YES;
+    } else if ([self.squareArray[2] squareVal] != 0 && [self.squareArray[2] squareVal] == [self.squareArray[4] squareVal] && [self.squareArray[2] squareVal] == [self.squareArray[6] squareVal]) {
+        self.weHaveWinner = YES;
+    } else {
+        playerTurn = (pTurn == 1) ? 2 : 1;
+    }
+    if (self.weHaveWinner) {
+        self.winnersAlert = [[UIAlertView alloc] initWithTitle:@"Winner!" message:[NSString stringWithFormat:@"Player %i Wins!", pTurn] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
         [self.winnersAlert show];
-    } else if (self.winnersArray[3] == self.winnersArray[4] && self.winnersArray[3] == self.winnersArray[5]) {
-        self.winnersAlert = [[UIAlertView alloc] initWithTitle:@"Winner!" message:[NSString stringWithFormat:@"Player %@ Wins!", self.winnersArray[3]] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-        [self.winnersAlert show];
-    } else if (self.winnersArray[6] == self.winnersArray[7] && self.winnersArray[6] == self.winnersArray[8]) {
-        self.winnersAlert = [[UIAlertView alloc] initWithTitle:@"Winner!" message:[NSString stringWithFormat:@"Player %@ Wins!", self.winnersArray[6]] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-        [self.winnersAlert show];
-    } else if (self.winnersArray[0] == self.winnersArray[3] && self.winnersArray[0] == self.winnersArray[6]) {
-        self.winnersAlert = [[UIAlertView alloc] initWithTitle:@"Winner!" message:[NSString stringWithFormat:@"Player %@ Wins!", self.winnersArray[0]] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-        [self.winnersAlert show];
-    } else if (self.winnersArray[1] == self.winnersArray[4] && self.winnersArray[1] == self.winnersArray[7]) {
-        self.winnersAlert = [[UIAlertView alloc] initWithTitle:@"Winner!" message:[NSString stringWithFormat:@"Player %@ Wins!", self.winnersArray[1]] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-        [self.winnersAlert show];
-    } else if (self.winnersArray[2] == self.winnersArray[5] && self.winnersArray[2] == self.winnersArray[8]) {
-        self.winnersAlert = [[UIAlertView alloc] initWithTitle:@"Winner!" message:[NSString stringWithFormat:@"Player %@ Wins!", self.winnersArray[2]] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-        [self.winnersAlert show];
-    } else if (self.winnersArray[0] == self.winnersArray[4] && self.winnersArray[0] == self.winnersArray[8]) {
-        self.winnersAlert = [[UIAlertView alloc] initWithTitle:@"Winner!" message:[NSString stringWithFormat:@"Player %@ Wins!", self.winnersArray[0]] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-        [self.winnersAlert show];
-    } else if (self.winnersArray[2] == self.winnersArray[4] && self.winnersArray[2] == self.winnersArray[6]) {
-        self.winnersAlert = [[UIAlertView alloc] initWithTitle:@"Winner!" message:[NSString stringWithFormat:@"Player %@ Wins!", self.winnersArray[2]] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-        [self.winnersAlert show];
-    }   else {
-        NSLog(@"Nothing to do here!");
     }
 }
 
 
 //Button handler for box 1
 - (IBAction)buttonOne:(id)sender {
-    if (self.squareOne.squareVal == 0) {
-        self.squareOne.squareVal = playerTurn;
+    if ([self.squareArray[0] squareVal] == 0) {
+        ((TttSquare *)self.squareArray[0]).squareVal = playerTurn;
         self.turnLabel.text = [self turnTextChange:playerTurn];
-        
-        //Updated winnersArray NEEDS to be removed
-        if (playerTurn == 1) {
-            self.winnersArray[0] = @"1";
-        } else {
-            self.winnersArray[0] = @"2";
-        }
-        
         self.boxOne.text = [self exoroh:playerTurn];
         
         //Check for winner and show alert if there is
-        [self isWinner];
-     
-    } else {
-        NSLog(@"Nothing to do!");
+        [self isWinner:playerTurn];
     }
-
 }
 
 //Button handler for box 2
 - (IBAction)buttonTwo:(id)sender {
-    if (self.squareTwo.squareVal == 0) {
-        self.squareTwo.squareVal = playerTurn;
+    if ([self.squareArray[1] squareVal] == 0) {
+        ((TttSquare *)self.squareArray[1]).squareVal = playerTurn;
         self.turnLabel.text = [self turnTextChange:playerTurn];
-        
-        //Updated winnersArray NEEDS to be removed
-        if (playerTurn == 1) {
-            self.winnersArray[1] = @"1";
-        } else {
-            self.winnersArray[1] = @"2";
-        }
-        
         self.boxTwo.text = [self exoroh:playerTurn];
         
         //Check for winner and show alert if there is
-        [self isWinner];
-        
-    } else {
-        NSLog(@"Nothing to do!");
+        [self isWinner:playerTurn];
     }
 }
 
 //Button handler for box 3
 - (IBAction)buttonThree:(id)sender {
-    if (self.squareThree.squareVal == 0) {
-        self.squareThree.squareVal = playerTurn;
+    if ([self.squareArray[2] squareVal] == 0) {
+        ((TttSquare *)self.squareArray[2]).squareVal = playerTurn;
         self.turnLabel.text = [self turnTextChange:playerTurn];
-        
-        //Updated winnersArray NEEDS to be removed
-        if (playerTurn == 1) {
-            self.winnersArray[2] = @"1";
-        } else {
-            self.winnersArray[2] = @"2";
-        }
-        
         self.boxThree.text = [self exoroh:playerTurn];
         
         //Check for winner and show alert if there is
-        [self isWinner];
-        
-    } else {
-        NSLog(@"Nothing to do!");
+        [self isWinner:playerTurn];
     }
 }
 //Button handler for box 4
 
 - (IBAction)buttonFour:(id)sender {
-    if (self.squareFour.squareVal == 0) {
-        self.squareFour.squareVal = playerTurn;
+    if ([self.squareArray[3] squareVal] == 0) {
+        ((TttSquare *)self.squareArray[3]).squareVal = playerTurn;
         self.turnLabel.text = [self turnTextChange:playerTurn];
-        
-        //Updated winnersArray NEEDS to be removed
-        if (playerTurn == 1) {
-            self.winnersArray[3] = @"1";
-        } else {
-            self.winnersArray[3] = @"2";
-        }
-        
         self.boxFour.text = [self exoroh:playerTurn];
         
         //Check for winner and show alert if there is
-        [self isWinner];
-        
-    } else {
-        NSLog(@"Nothing to do!");
+        [self isWinner:playerTurn];
     }
 }
 
 //Button handler for box 5
 - (IBAction)buttonFive:(id)sender {
-    if (self.squareFive.squareVal == 0) {
-        self.squareFive.squareVal = playerTurn;
+    if ([self.squareArray[4] squareVal] == 0) {
+        ((TttSquare *)self.squareArray[4]).squareVal = playerTurn;
         self.turnLabel.text = [self turnTextChange:playerTurn];
-        
-        //Updated winnersArray NEEDS to be removed
-        if (playerTurn == 1) {
-            self.winnersArray[4] = @"1";
-        } else {
-            self.winnersArray[4] = @"2";
-        }
-        
         self.boxFive.text = [self exoroh:playerTurn];
         
         //Check for winner and show alert if there is
-        [self isWinner];
-        
-    } else {
-        NSLog(@"Nothing to do!");
+        [self isWinner:playerTurn];
     }
 }
 
 //Button handler for box 6
 - (IBAction)buttonSix:(id)sender {
-    if (self.squareSix.squareVal == 0) {
-        self.squareSix.squareVal = playerTurn;
+    if ([self.squareArray[5] squareVal] == 0) {
+        ((TttSquare *)self.squareArray[5]).squareVal = playerTurn;
         self.turnLabel.text = [self turnTextChange:playerTurn];
-        
-        //Updated winnersArray NEEDS to be removed
-        if (playerTurn == 1) {
-            self.winnersArray[5] = @"1";
-        } else {
-            self.winnersArray[5] = @"2";
-        }
-        
         self.boxSix.text = [self exoroh:playerTurn];
         
         //Check for winner and show alert if there is
-        [self isWinner];
-    
-    } else {
-        NSLog(@"Nothing to do!");
+        [self isWinner:playerTurn];
     }
 }
 
-
 //Button handler for box 7
 - (IBAction)buttonSeven:(id)sender {
-    if (self.squareSeven.squareVal == 0) {
-        self.squareSeven.squareVal = playerTurn;
+    if ([self.squareArray[6] squareVal] == 0) {
+        ((TttSquare *)self.squareArray[6]).squareVal = playerTurn;
         self.turnLabel.text = [self turnTextChange:playerTurn];
-        
-        //Updated winnersArray NEEDS to be removed
-        if (playerTurn == 1) {
-            self.winnersArray[6] = @"1";
-        } else {
-            self.winnersArray[6] = @"2";
-        }
-        
         self.boxSeven.text = [self exoroh:playerTurn];
         
         //Check for winner and show alert if there is
-        [self isWinner];
-        
-    } else {
-        NSLog(@"Nothing to do!");
+        [self isWinner:playerTurn];
     }
 }
 
 //Button handler for box 8
 - (IBAction)buttonEight:(id)sender {
-    if (self.squareEight.squareVal == 0) {
-        self.squareEight.squareVal = playerTurn;
+    if ([self.squareArray[7] squareVal] == 0) {
+        ((TttSquare *)self.squareArray[7]).squareVal = playerTurn;
         self.turnLabel.text = [self turnTextChange:playerTurn];
-        
-        //Updated winnersArray NEEDS to be removed
-        if (playerTurn == 1) {
-            self.winnersArray[7] = @"1";
-        } else {
-            self.winnersArray[7] = @"2";
-        }
-        
         self.boxEight.text = [self exoroh:playerTurn];
         
         //Check for winner and show alert if there is
-        [self isWinner];
-        
-    } else {
-        NSLog(@"Nothing to do!");
+        [self isWinner:playerTurn];
     }
 }
 
 //Button handler for box 9
 - (IBAction)buttonNine:(id)sender {
-    if (self.squareNine.squareVal == 0) {
-        self.squareNine.squareVal = playerTurn;
+    if ([self.squareArray[8] squareVal] == 0) {
+        ((TttSquare *)self.squareArray[8]).squareVal = playerTurn;
         self.turnLabel.text = [self turnTextChange:playerTurn];
-        
-        //Updated winnersArray NEEDS to be removed
-        if (playerTurn == 1) {
-            self.winnersArray[8] = @"1";
-        } else {
-            self.winnersArray[8] = @"2";
-        }
-        
         self.boxNine.text = [self exoroh:playerTurn];
         
         //Check for winner and show alert if there is
-        [self isWinner];
-        
-    } else {
-        NSLog(@"Nothing to do!");
+        [self isWinner:playerTurn];
     }
-    
 }
 
 - (IBAction)resetButton:(id)sender {
-    self.boxOne.text = @"";
-    self.squareOne.squareVal = 0;
-    self.boxTwo.text = @"";
-    self.squareTwo.squareVal = 0;
-    self.boxThree.text = @"";
-    self.squareThree.squareVal = 0;
-    self.boxFour.text = @"";
-    self.squareFour.squareVal = 0;
-    self.boxFive.text = @"";
-    self.squareFive.squareVal = 0;
-    self.boxSix.text = @"";
-    self.squareSix.squareVal = 0;
-    self.boxSeven.text = @"";
-    self.squareSeven.squareVal = 0;
-    self.boxEight.text = @"";
-    self.squareEight.squareVal = 0;
-    self.boxNine.text = @"";
-    self.squareNine.squareVal = 0;
-    self.winnersArray[0] = @"01";
-    self.winnersArray[1] = @"02";
-    self.winnersArray[2] = @"03";
-    self.winnersArray[3] = @"04";
-    self.winnersArray[4] = @"05";
-    self.winnersArray[5] = @"06";
-    self.winnersArray[6] = @"07";
-    self.winnersArray[7] = @"08";
-    self.winnersArray[8] = @"09";
+    for (TttSquare *square in self.squareArray) {
+        square.squareVal = 0;
+    }
+    
+    for (UILabel *label in self.boxArray) {
+        label.text = @"";
+    }
+    
+    self.weHaveWinner = NO;
     self.turnLabel.text = @"Player 1's Turn";
     playerTurn = 1;
 }
@@ -367,16 +232,10 @@ int playerTurn = 1;
     self.squareEight = [[TttSquare alloc] initWithNumberAndValue:8 :0];
     self.squareNine =  [[TttSquare alloc] initWithNumberAndValue:9 :0];
     
-    self.winnersArray = [[NSMutableArray alloc] initWithObjects: @"01", @"02", @"03", @"04", @"05", @"06", @"07", @"08", nil];
-    
-    
     // Loading all 9 square objects in to an array
-    //NSMutableArray *squareArray = [[NSMutableArray alloc] initWithObjects: self.squareOne, self.squareTwo, self.squareThree, self.squareFour, self.squareFive, self.squareSix, self.squareSeven, self.squareEight, self.squareNine, nil];
-    //NSLog(@"%d", [squareArray[0] squareVal]);
+    self.squareArray = [[NSArray alloc] initWithObjects: self.squareOne, self.squareTwo, self.squareThree, self.squareFour, self.squareFive, self.squareSix, self.squareSeven, self.squareEight, self.squareNine, nil];
+    self.boxArray = [[NSMutableArray alloc] initWithObjects: self.boxOne, self.boxTwo, self.boxThree, self.boxFour, self.boxFive, self.boxSix, self.boxSeven, self.boxEight, self.boxNine, nil];
 }
-
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
